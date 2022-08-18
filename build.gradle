@@ -19,13 +19,16 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	// https://mavenlibs.com/maven/dependency/com.amazonaws/aws-java-sdk-polly
 	implementation group: 'com.amazonaws', name: 'aws-java-sdk-polly', version: '1.12.284'
 	// https://mvnrepository.com/artifact/com.googlecode.soundlibs/jlayer
 	implementation group: 'com.googlecode.soundlibs', name: 'jlayer', version: '1.0.1.4'
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.5.RELEASE'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+//	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
