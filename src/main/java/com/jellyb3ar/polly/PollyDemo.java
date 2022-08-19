@@ -30,15 +30,6 @@ public class PollyDemo {
         polly.setRegion(Region.getRegion(Regions.AP_NORTHEAST_2));
     }
 
-    public InputStream synthesize(String text, OutputFormat format) throws IOException {
-        SynthesizeSpeechRequest synthReq =
-                new SynthesizeSpeechRequest().withText(text).withVoiceId(voice.getId())
-                        .withOutputFormat(format).withEngine("neural");
-        SynthesizeSpeechResult synthRes = polly.synthesizeSpeech(synthReq);
-
-        return synthRes.getAudioStream();
-    }
-
     public void synthesizeSpeech(String text, long num) {
         String outputFileName = "/tmp/polly_"+num+".mp3";
         SynthesizeSpeechRequest synthesizeSpeechRequest = new SynthesizeSpeechRequest()

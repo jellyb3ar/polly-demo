@@ -28,6 +28,15 @@ public class Card {
     @Column(name = "mp3_url")
     private String mp3Url;
 
+    @Builder
+    public Card(long id, String cardName, String cartText, String imgUrl, String mp3Url) {
+        this.id = id;
+        this.cardName = cardName;
+        this.cartText = cartText;
+        this.imgUrl = imgUrl;
+        this.mp3Url = mp3Url;
+    }
+
     public void updateMp3Url(String mp3Url){
         this.mp3Url = mp3Url;
     }
