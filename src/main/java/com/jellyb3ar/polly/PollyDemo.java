@@ -22,9 +22,6 @@ public class PollyDemo {
 
     private final AmazonPollyClient polly;
     private final Voice voice;
-    private static final String SAMPLE = "Congratulations. You have successfully built this working demo" +
-            "of Amazon Polly in Java. Have fun building voice enabled apps with Amazon Polly (that's me!), and always" +
-            "look at the AWS website for tips and tricks on using Amazon Polly and other great services from AWS";
 
     public PollyDemo() {
         PollyConfig config = new PollyConfig();
@@ -42,9 +39,8 @@ public class PollyDemo {
         return synthRes.getAudioStream();
     }
 
-    public void synthesizeSpeech(String text) {
-        String outputFileName = "/Users/yujin/IdeaProjects/speech.mp3";
-        text = "Test A B C D E";
+    public void synthesizeSpeech(String text, long num) {
+        String outputFileName = "/tmp/polly_"+num+".mp3";
         SynthesizeSpeechRequest synthesizeSpeechRequest = new SynthesizeSpeechRequest()
                 .withOutputFormat(OutputFormat.Mp3)
                 .withVoiceId(VoiceId.Joanna)
@@ -66,34 +62,9 @@ public class PollyDemo {
         }
     }
 
-    public static void saveMP3(String text) {
+    public static void saveMP3(String text, long num) {
         PollyDemo pollyFile = new PollyDemo();
-//        InputStream speechStream = pollyFile.synthesize(text, OutputFormat.Mp3);
-        pollyFile.synthesizeSpeech(text);
-
-    }
-
-    public static void playMP3(String text) throws IOException, JavaLayerException {
-        PollyDemo pollyFile = new PollyDemo();
-        InputStream speechStream = pollyFile.synthesize(text, OutputFormat.Mp3);
-
-        //create an MP3 player
-        AdvancedPlayer player = new AdvancedPlayer(speechStream,
-                javazoom.jl.player.FactoryRegistry.systemRegistry().createAudioDevice());
-
-        player.setPlayBackListener(new PlaybackListener() {
-            @Override
-            public void playbackStarted(PlaybackEvent evt) {
-                System.out.println("Playback started");
-                System.out.println(text);
-            }
-
-            @Override
-            public void playbackFinished(PlaybackEvent evt) {
-                System.out.println("Playback finished");
-            }
-        });
-
-        player.play();
+        pollyFile.synthesizeSpeech(text, num);
+        System.out.println("Save Finished");
     }
 }

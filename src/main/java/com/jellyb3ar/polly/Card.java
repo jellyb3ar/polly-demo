@@ -1,6 +1,7 @@
 package com.jellyb3ar.polly;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,4 +27,12 @@ public class Card {
 
     @Column(name = "mp3_url")
     private String mp3Url;
+
+    public void updateMp3Url(String mp3Url){
+        this.mp3Url = mp3Url;
+    }
+
+    public void updateImgUrl(String imgUrl){
+        this.imgUrl = imgUrl;
+    }
 }
