@@ -1,10 +1,7 @@
 package com.jellyb3ar.polly.config;
 
-import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.polly.AmazonPollyClient;
-import com.amazonaws.services.polly.model.DescribeVoicesRequest;
-import com.amazonaws.services.polly.model.DescribeVoicesResult;
 import com.amazonaws.services.polly.model.Voice;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -26,22 +23,8 @@ public class PollyConfig {
     @Bean
     @Primary
     public BasicAWSCredentials awsCredentialsProvider() {
-        BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
+        BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(accessKey, accessKey);
         return basicAWSCredentials;
-    }
-
-    @Bean
-    public AmazonPollyClient getPolly() {
-        AmazonPollyClient polly = new AmazonPollyClient(awsCredentialsProvider(), new ClientConfiguration());
-        return polly;
-    }
-
-    @Bean
-    public Voice getVoice() {
-        DescribeVoicesRequest describeVoicesRequest = new DescribeVoicesRequest();
-        DescribeVoicesResult describeVoicesResult = getPolly().describeVoices(describeVoicesRequest);
-        voice = describeVoicesResult.getVoices().get(0);
-        return voice;
     }
 
 

@@ -21,13 +21,11 @@ public class S3Config {
     @Value(("${cloud.aws.bucket"))
     private String bucket;
 
-    PollyConfig config = new PollyConfig();
-
     @Bean
     public AmazonS3 amazonS3() {
         AmazonS3 s3Builder = AmazonS3ClientBuilder.standard()
                 .withRegion(Regions.AP_NORTHEAST_2)
-                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
+                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials("", secretKey)))
                 .build();
         return s3Builder;
     }

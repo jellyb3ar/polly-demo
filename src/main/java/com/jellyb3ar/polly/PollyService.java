@@ -1,5 +1,11 @@
 package com.jellyb3ar.polly;
 
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.polly.AmazonPollyClient;
+import com.amazonaws.services.polly.model.DescribeVoicesRequest;
+import com.amazonaws.services.polly.model.DescribeVoicesResult;
+import com.amazonaws.services.polly.model.Voice;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import javazoom.jl.decoder.JavaLayerException;
@@ -22,8 +28,23 @@ public class PollyService {
     private final PollyDemo demo;
     private final CardRepository repository;
     private final AmazonS3 amazonS3;
+    private final BasicAWSCredentials credentials;
     private static String S3URL = "https://ourney-s3.s3.ap-northeast-2.amazonaws.com";
     private static String bucket = "ourney-s3";
+
+
+    public AmazonPollyClient getPolly() {
+        AmazonPollyClient polly = new AmazonPollyClient(credentials, new ClientConfiguration());
+        return polly;
+    }
+
+    public Voice getVoice() {
+        DescribeVoicesRequest describeVoicesRequest = new DescribeVoicesRequest();
+        DescribeVoicesResult describeVoicesResult = getPolly().describeVoices(describeVoicesRequest);
+        Voice voice = describeVoicesResult.getVoices().get(0);
+        return voice;
+    }
+
 
     public List<PollyResponse> getList() {
         List<Card> cardList = repository.findAll();
@@ -41,12 +62,12 @@ public class PollyService {
 
     @Transactional
     public PollyResponse playFile(long num) {
-        Card c = repository.findById(1L).orElseThrow(() -> new IllegalArgumentException());
-        if(c.getMp3Url().equals("")){
+        Card c = repository.findById(num).orElseThrow(() -> new IllegalArgumentException());
+//        if(c.getMp3Url().isEmpty()){
             demo.saveMP3(c.getCartText(), num);
             upload(new File("/tmp/polly_" + num + ".mp3"), "mp3", "polly_"+num+".mp3");
             c.updateMp3Url(S3URL+"/mp3/polly_"+num+".mp3");
-        }
+//        }
         PollyResponse response = PollyResponse.builder()
                 .id(c.getId())
                 .cardText(c.getCartText())
