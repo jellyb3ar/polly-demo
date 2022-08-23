@@ -1,6 +1,7 @@
 #!/bin/bash
 BUILD_JAR=$(ls /home/ec2-user/build/*.jar)
 JAR_NAME=$(basename $BUILD_JAR)
+YML_FILE=application.yml
 echo "> build 파일명: $JAR_NAME" >> /home/ec2-user/deploy.log
 
 echo "> build 파일 복사" >> /home/ec2-user/deploy.log
@@ -21,4 +22,4 @@ fi
 
 DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
 echo "> DEPLOY_JAR 배포"    >> /home/ec2-user/deploy.log
-nohup java -jar $DEPLOY_JAR >> /home/ec2-user/deploy.log 2>/home/ec2-user/deploy_err.log &
+nohup java -jar -Dspring.config.location=$YML_FILE $DEPLOY_JAR >> /home/ec2-user/deploy.log 2>/home/ec2-user/deploy_err.log &
